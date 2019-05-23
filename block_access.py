@@ -10,7 +10,7 @@ class ControlIptables(object):
 
     def lock_ip(self, ip, subnet=False):
         if subnet:
-            ip = subnet
+            ip = self.ip_and_subnet(ip, subnet)
         self.rule.src = ip
         target = self.rule.create_target("DROP")
         self.rule.target = target
@@ -23,6 +23,16 @@ class ControlIptables(object):
         self.chain.insert_rule(self.rule)
 
     def ip_and_subnet(self, ip, subnet):
+        """
+        Recive ip and apply subnet in ip for block ip and subnets
+        Args:
+            ip (str): ip
+            subnet (str): format example 0/24
+
+        Returns:
+            str
+
+        """
         subnet_split = subnet.split('/')
         ip_split = ip.split('.')
         ip = ip_split[:-len(subnet_split[0])]
