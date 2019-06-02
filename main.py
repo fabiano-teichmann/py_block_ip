@@ -2,14 +2,16 @@ from block_access import ControlIptables
 from load_rules_block import read_file
 
 
-def protect_attack(ip, path, file_rules=None, file_ip_accept=None):
+def protect_attack(ip, path, file_rules=None, file_ip_accept=None, subnet=None):
     """
 
     Args:
         ip (str):
         path (str): path url try access
-        file_rules (str): path file content paths deny access
-        file_ip_accept (str): path file content ip permit access
+        file_rules (str): path file content paths deny access if not passed file is used file default
+        file_ip_accept (str): path file content ip permit access if not passed file all ip try access one path protect
+        subnet (str):  Use for blocked range ip
+        will be blocked
 
     Returns:
 
@@ -47,7 +49,8 @@ def ip_is_allowed(ip, file_ip_accept=None):
             return True
         else:
             return False
-
+    else:
+        return False
 
 if __name__ == '__main__':
     ControlIptables().lock_ip(ip='192.168.25.235')
