@@ -1,9 +1,15 @@
+import os
 
-def path_deny(path=None):
-    if path is None:
-        path = 'block.txt'
 
-    file_ = open(path, 'r').read()
-    data = file_.split('\n')
+def read_file(file_=None):
+    if file_ is None:
+        path = os.path.join(os.getcwd(), 'block.txt')
+    else:
+        path = file_
+
+    file_ = open(path, 'r')
+    data = file_.read()
+    data = data.split('\n')
+    file_.close()
     return [item for item in data if '#' not in item and item != '']
 
