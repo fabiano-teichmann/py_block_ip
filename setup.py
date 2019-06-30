@@ -12,4 +12,3 @@ setup(
     packages=['py_block_ip'],
     install_requires=['python-iptables', 'faker'],
 )
-
