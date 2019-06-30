@@ -1,7 +1,8 @@
+import os
 from unittest import TestCase
 from faker import Faker
 
-from main import protect_attack
+from py_block_ip.main import protect_attack
 
 
 class TestBlockIp(TestCase):
@@ -9,7 +10,7 @@ class TestBlockIp(TestCase):
         fake = Faker()
         self.ip = fake.ipv4()
         self.path = '/db/phpmyadmin/index.php'
-        self.file = '/home/fabiano/PycharmProjects/py_blocks_attacks/block.txt'
+        self.file = os.path.join(os.getcwd(), 'block.txt')
 
     def test_block_ip(self):
         msg = 'Must be return true'

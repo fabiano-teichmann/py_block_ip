@@ -1,8 +1,8 @@
-from block_access import ControlIptables
-from load_rules_block import read_file
+from py_block_ip.block_access import ControlIptables
+from py_block_ip.load_rules_block import read_file
 
 
-def protect_attack(ip, path, file_rules=None, file_ip_accept=None, subnet=None):
+def protect_attack(ip, path, file_rules=None, file_ip_accept=None):
     """
 
     Args:

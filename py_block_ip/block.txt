@@ -12,6 +12,7 @@ dbadmin/index.php?lang=en
 pma/index.php?
 db/index.php
 admin/index.php
+wp-admin/index.php
 mysql/index.php
 database/index.php
 db/phpmyadmin/index.php
