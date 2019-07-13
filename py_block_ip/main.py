@@ -52,5 +52,3 @@ def ip_is_allowed(ip, file_ip_accept=None):
     else:
         return False
 
-if __name__ == '__main__':
-    ControlIptables().lock_ip(ip='192.168.25.235')
