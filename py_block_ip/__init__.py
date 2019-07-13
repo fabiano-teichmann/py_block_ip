@@ -1,0 +1,1 @@
+from py_block_ip.main import protect_attack
