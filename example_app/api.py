@@ -6,7 +6,7 @@ from py_block_ip import protect_attack
 class NotFoundHandler(RequestHandler):
     def get(self, *args, **kwargs):
 
-        blocked = protect_attack(ip=self.request.remote_ip, path=self.request.uri, file_rules='example_rules.txt')
+        blocked = protect_attack(ip=self.request.remote_ip, path=self.request.uri, file_rules='app/example_rules.txt')
         if blocked is False:
             raise HTTPError(
                 status_code=404,
