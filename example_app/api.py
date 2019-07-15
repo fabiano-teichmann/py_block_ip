@@ -10,12 +10,17 @@ class NotFoundHandler(RequestHandler):
         if blocked is False:
             raise HTTPError(
                 status_code=404,
-                reason=f"Ops not found resource you ip is {self.request.remote_ip}"
+                reason=f"Ops not found resource and you ip is {self.request.remote_ip}"
+            )
+        else:
+            raise HTTPError(
+                status_code=500,
+                reason=f"Access deny. Your ip {self.request.remote_ip} was blocked "
             )
 
 class HomeHandler(RequestHandler):
     def get(self):
-        self.write({'ok': 'ok'})
+        self.write({'message': 'Hello you app example Pyblock is run success.'})
 
 
 def make_app():

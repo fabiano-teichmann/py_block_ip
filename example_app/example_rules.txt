@@ -6,7 +6,7 @@ wp-content/plugins/portable-phpmyadmin/
 phpmy/index.php?
 shopdb/index.php?
 MyAdmin/index.php?l
-rogram/index.php
+program/index.php
 PMA/index.php?lang=en
 dbadmin/index.php?lang=en
 pma/index.php?
