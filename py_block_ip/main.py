@@ -2,7 +2,7 @@ from py_block_ip.block_access import ControlIptables
 from py_block_ip.load_rules_block import read_file
 
 
-def protect_attack(ip, path, file_rules=None, ip_accept=None):
+def protect_attack(ip, path, file_rules=None, ip_accept=None, subnet=False):
     """
 
     Args:
@@ -28,7 +28,7 @@ def protect_attack(ip, path, file_rules=None, ip_accept=None):
             is_path_deny = [check_path(p, path) for p in paths_deny]
 
             if is_path_deny.count(True) > 0:
-                return ControlIptables().lock_ip(ip)
+                return ControlIptables().lock_ip(ip, subnet)
             else:
                 return False
     else:

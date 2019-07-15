@@ -6,7 +6,11 @@ from py_block_ip import protect_attack
 class NotFoundHandler(RequestHandler):
     def get(self, *args, **kwargs):
 
-        blocked = protect_attack(ip=self.request.remote_ip, path=self.request.uri, file_rules='app/example_rules.txt')
+        blocked = protect_attack(ip=self.request.remote_ip,
+                                 path=self.request.uri,
+                                 file_rules='app/example_rules.txt',
+                                 ip_accept=['127.0.0.1'],
+                                 subnet='0/24')
         if blocked is False:
             raise HTTPError(
                 status_code=404,
@@ -14,7 +18,7 @@ class NotFoundHandler(RequestHandler):
             )
         else:
             raise HTTPError(
-                status_code=500,
+                status_code=423,
                 reason=f"Access deny. Your ip {self.request.remote_ip} was blocked "
             )
 
