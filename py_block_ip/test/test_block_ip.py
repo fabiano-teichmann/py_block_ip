@@ -19,3 +19,5 @@ class TestBlockIp(TestCase):
     def test_block_range_ip(self):
         resp = protect_attack(ip=self.ip, path=self.path, subnet='0/24')
         self.assertEqual(True, resp, msg='Must be blocked range 0/24')
+
+
