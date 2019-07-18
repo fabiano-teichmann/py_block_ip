@@ -1,5 +1,18 @@
+import argparse
+import configparser
 from py_block_ip.block_access import ControlIptables
 from py_block_ip.load_rules_block import read_file
+
+parser = argparse.ArgumentParser(description='#### Py Block IP ####')
+parser.add_argument('--config', dest="config", action="store_true",
+                    help='Configure file content paths deny access and configure list ip with access')
+parser.add_argument('--ip', dest="protect", type=str,
+                    help='ip requesting')
+parser.add_argument('--path', dest="protect", type=str,
+                    help='path request')
+
+parser.add_argument('--subnet', dest="protect", type=str,
+                    help='Use for deny range ip by default only ip request is blocked')
 
 
 def protect_attack(ip, path, file_rules=None, ip_accept=None, subnet=False):
@@ -54,3 +67,25 @@ def ip_is_allowed(ip, file_ip_accept=None):
     else:
         return False
 
+
+def create_file_settings():
+    config = configparser.ConfigParser()
+    ip_accept = input('Insert path file content ip with acess allowed')
+    paths_deny = input('Insert path file content paths for protect')
+    rules = read_file(paths_deny)
+    ips = read_file(ip_accept)
+    config['settings'] = {}
+    config['settings']['PYBLOCK_IP_ACCEPT'] = ", ".join(x for x in ips)
+    config['settings']['PYBLOCK_PATHS_DENY'] = ", ".join(x for x in rules)
+    with open('settings.ini', 'w') as configfile:
+        config.write(configfile)
+
+
+if __name__ == "__main__":
+    args = parser.parse_args()
+    if args.config:
+        pass
+    elif args.ip and args.path:
+        protect_attack(ip=args.ip, path=args.path, subnet=args.subnet)
+    else:
+        print('Is necessary pass parameters ip and path')

@@ -4,6 +4,9 @@ from py_block_ip import protect_attack
 
 
 class NotFoundHandler(RequestHandler):
+    """
+    Example use for bloqued acess
+    """
     def get(self, *args, **kwargs):
 
         blocked = protect_attack(ip=self.request.remote_ip,

@@ -3,3 +3,4 @@ faker
 tornado
 git+https://github.com/fabiano-teichmann/py_block_ip.git
 requests
+python-decouple
