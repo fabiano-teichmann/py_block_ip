@@ -1,5 +1,9 @@
 import argparse
 import configparser
+from datetime import datetime
+
+from decouple import config
+
 from py_block_ip.block_access import ControlIptables
 from read_file_rules import read_file
 
@@ -8,14 +12,14 @@ parser.add_argument('--config', dest="config", action="store_true",
                     help='Configure file content paths deny access and configure list ip with access')
 parser.add_argument('--ip', dest="ip", type=str,
                     help='ip requesting')
-parser.add_argument('--path', dest="protect", type=str,
+parser.add_argument('--path', dest="path", type=str,
                     help='path request')
 
-parser.add_argument('--subnet', dest="protect", type=str,
+parser.add_argument('--subnet', dest="subnet", type=str,
                     help='Use for deny range ip by default only ip request is blocked')
 
 
-def protect_attack(ip, path, file_rules=None, ip_accept=None, subnet=False):
+def protect_attack(ip, path, subnet=False):
     """
 
     Args:
@@ -29,23 +33,26 @@ def protect_attack(ip, path, file_rules=None, ip_accept=None, subnet=False):
     Returns:
 
     """
-    try:
-        paths_deny = read_file(file_rules)
-    except Exception as e:
-        raise e
-    if ip_accept is not None:
-        if ip in ip_accept:
-            return False
-        else:
-            check_path = lambda x, y: True if x in y else False
-            is_path_deny = [check_path(p, path) for p in paths_deny]
+    paths_deny = config('pyblock_paths_deny', default='')
+    ip_accept = config('pyblock_ip_accept', default='http://127.0.0.1')
 
-            if is_path_deny.count(True) > 0:
-                return ControlIptables().lock_ip(ip, subnet)
-            else:
-                return False
-    else:
+    if ip in ip_accept:
         return False
+    else:
+        check_path = lambda x, y: True if x in y else False
+        is_path_deny = [check_path(p, path) for p in paths_deny]
+
+        if is_path_deny.count(True) > 0:
+            if ControlIptables().lock_ip(ip, subnet):
+                now = datetime.now()
+                resp = f"Ip {ip} blocked try access path {path} - {now.strftime('%m/%d/%Y %H:%M:%S')} \n"
+                file_log = config('PYBLOCK_LOGS', default='/var/log/pyblock_logs.logs')
+                file_ = open(file_log, 'a')
+                file_.write(resp)
+                file_.close()
+                print(resp)
+        else:
+            return False
 
 
 def ip_is_allowed(ip, file_ip_accept=None):
@@ -68,7 +75,7 @@ def ip_is_allowed(ip, file_ip_accept=None):
         return False
 
 
-def create_file_settings(ip_accept, paths_deny):
+def create_file_settings(ip_accept, paths_deny, log):
     config = configparser.ConfigParser()
     config['settings'] = {}
 
@@ -86,6 +93,11 @@ def create_file_settings(ip_accept, paths_deny):
     else:
         config['settings']['PYBLOCK_IP_ACCEPT'] = " "
 
+    if log:
+        config['settings']['PYBLOCK_LOGS'] = log
+    else:
+        config['settings']['PYBLOCK_LOGS'] = '/var/log/pyblock_logs.log'
+
     with open('settings.ini', 'w') as configfile:
         config.write(configfile)
     return "Configured with success."
@@ -96,8 +108,13 @@ if __name__ == "__main__":
     if args.config:
         paths_deny = input('Insert path file content paths for protect (required) ')
         ip_accept = input('Insert path file content ip with acess allowed (not required) ')
-        print(create_file_settings(ip_accept, paths_deny))
+        log = input('Insert path file log (not required) ')
+        print(create_file_settings(ip_accept, paths_deny, log))
     elif args.ip and args.path:
-        protect_attack(ip=args.ip, path=args.path, subnet=args.subnet)
+        if args.subnet is None:
+            protect_attack(ip=args.ip, path=args.path)
+        else:
+            protect_attack(ip=args.ip, path=args.path, subnet=args.subnet)
+
     else:
         print('Is necessary pass parameters ip and path')
