@@ -1,0 +1,2 @@
+mysql/admin/index.php, mysql/dbadmin/index.php; mysql/sqlmanager/index.php
+phpmyadmin/index.php?

@@ -1,7 +1,7 @@
 import argparse
 import configparser
 from py_block_ip.block_access import ControlIptables
-from py_block_ip.load_rules_block import read_file
+from py_block_ip.read_file_rules import read_file
 
 parser = argparse.ArgumentParser(description='#### Py Block IP ####')
 parser.add_argument('--config', dest="config", action="store_true",
