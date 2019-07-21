@@ -1,10 +1,10 @@
-import argparse
 import configparser
 from datetime import datetime
 
 from decouple import config
-
+from py_block_ip.load_rules_block import read_file
 from py_block_ip.block_access import ControlIptables
+
 
 def protect_attack(ip, path, subnet=False):
     """
@@ -12,8 +12,6 @@ def protect_attack(ip, path, subnet=False):
     Args:
         ip (str):
         path (str): path url try access
-        file_rules (str): path file content paths deny access if not passed file is used file default
-        ip_accept (list): List ip accept
         subnet (str):  Use for blocked range ip
         will be blocked
 
@@ -40,26 +38,6 @@ def protect_attack(ip, path, subnet=False):
                 print(resp)
         else:
             return False
-
-
-def ip_is_allowed(ip, file_ip_accept=None):
-    """
-    Verify if ip is allowed
-    Args:
-        ip (str): ip
-        file_ip_accept (str): path file content ip allowed
-
-    Returns:
-        bool
-    """
-    if file_ip_accept is not None:
-        ip_accept = read_file(file_ip_accept)
-        if ip in ip_accept:
-            return True
-        else:
-            return False
-    else:
-        return False
 
 
 def create_file_settings(ip_accept, paths_deny, log):
