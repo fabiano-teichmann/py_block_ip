@@ -2,8 +2,8 @@ import configparser
 from datetime import datetime
 
 from decouple import config
-from py_block_ip.load_rules_block import read_file
-from py_block_ip.block_access import ControlIptables
+from load_rules_block import read_file
+from block_access import ControlIptables
 
 
 def protect_attack(ip, path, subnet=False):
