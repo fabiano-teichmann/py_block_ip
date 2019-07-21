@@ -1,12 +1,12 @@
 import argparse
 import configparser
 from py_block_ip.block_access import ControlIptables
-from py_block_ip.read_file_rules import read_file
+from read_file_rules import read_file
 
 parser = argparse.ArgumentParser(description='#### Py Block IP ####')
 parser.add_argument('--config', dest="config", action="store_true",
                     help='Configure file content paths deny access and configure list ip with access')
-parser.add_argument('--ip', dest="protect", type=str,
+parser.add_argument('--ip', dest="ip", type=str,
                     help='ip requesting')
 parser.add_argument('--path', dest="protect", type=str,
                     help='path request')
@@ -68,23 +68,35 @@ def ip_is_allowed(ip, file_ip_accept=None):
         return False
 
 
-def create_file_settings():
+def create_file_settings(ip_accept, paths_deny):
     config = configparser.ConfigParser()
-    ip_accept = input('Insert path file content ip with acess allowed')
-    paths_deny = input('Insert path file content paths for protect')
-    rules = read_file(paths_deny)
-    ips = read_file(ip_accept)
     config['settings'] = {}
-    config['settings']['PYBLOCK_IP_ACCEPT'] = ", ".join(x for x in ips)
-    config['settings']['PYBLOCK_PATHS_DENY'] = ", ".join(x for x in rules)
+
+    rules = read_file(paths_deny)
+    if isinstance(rules, list):
+        config['settings']['PYBLOCK_PATHS_DENY'] = ", ".join(x for x in rules)
+    else:
+        return f"{rules} content paths for protect"
+    if ip_accept:
+        ips = read_file(ip_accept)
+        if isinstance(ips, list):
+            config['settings']['PYBLOCK_IP_ACCEPT'] = ", ".join(x for x in ips)
+        else:
+            return f"{ips} File ips"
+    else:
+        config['settings']['PYBLOCK_IP_ACCEPT'] = " "
+
     with open('settings.ini', 'w') as configfile:
         config.write(configfile)
+    return "Configured with success."
 
 
 if __name__ == "__main__":
     args = parser.parse_args()
     if args.config:
-        pass
+        paths_deny = input('Insert path file content paths for protect (required) ')
+        ip_accept = input('Insert path file content ip with acess allowed (not required) ')
+        print(create_file_settings(ip_accept, paths_deny))
     elif args.ip and args.path:
         protect_attack(ip=args.ip, path=args.path, subnet=args.subnet)
     else:
