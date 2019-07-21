@@ -10,5 +10,5 @@ setup(
     keywords='block ip, protect attack',
     description=u'This tools has propose blocks ip suspects',
     packages=['py_block_ip'],
-    install_requires=['python-iptables', 'faker'],
+    install_requires=['python-iptables', 'python-decouple'],
 )
