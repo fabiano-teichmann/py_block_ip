@@ -1,4 +1,5 @@
 import configparser
+import os
 
 from py_block_ip.read_file_rules import read_file
 
@@ -6,7 +7,7 @@ from py_block_ip.read_file_rules import read_file
 def create_file_settings(ip_accept, paths_deny, log):
     config = configparser.ConfigParser()
     config['settings'] = {}
-
+    path = os.path.split(os.path.realpath(__file__))[0]
     rules = read_file(paths_deny)
     if isinstance(rules, list):
         config['settings']['PYBLOCK_PATHS_DENY'] = ", ".join(x for x in rules)
@@ -26,6 +27,6 @@ def create_file_settings(ip_accept, paths_deny, log):
     else:
         config['settings']['PYBLOCK_LOGS'] = '/var/log/pyblock_logs.log'
 
-    with open('settings.ini', 'w') as configfile:
+    with open(os.path.join(path, 'settings.ini', 'w')) as configfile:
         config.write(configfile)
     return "Configured with success."

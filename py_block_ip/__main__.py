@@ -1,5 +1,4 @@
 import argparse
-
 from py_block_ip.main import protect_attack
 from py_block_ip.settings import create_file_settings
 
