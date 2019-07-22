@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from py_block_ip.main import create_file_settings
+from py_block_ip.__main__ import create_file_settings
 from py_block_ip.read_file_rules import read_file
 
 

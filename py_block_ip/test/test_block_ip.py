@@ -2,7 +2,7 @@ import os
 from unittest import TestCase
 from faker import Faker
 
-from py_block_ip.main import protect_attack
+from py_block_ip.__main__ import protect_attack
 
 
 class TestBlockIp(TestCase):
