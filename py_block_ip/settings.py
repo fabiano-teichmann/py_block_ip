@@ -27,6 +27,6 @@ def create_file_settings(ip_accept, paths_deny, log):
     else:
         config['settings']['PYBLOCK_LOGS'] = '/var/log/pyblock_logs.log'
 
-    with open(os.path.join(path, 'settings.ini', 'w')) as configfile:
+    with open(os.path.join(path, 'settings.ini'), 'w') as configfile:
         config.write(configfile)
     return "Configured with success."
