@@ -5,4 +5,5 @@ COPY py_block_ip/test/test_block_ip.py /app
 COPY requirements.txt /app
 RUN pip3 install -r app/requirements.txt
 RUN python3 app/test_block_ip.py
+RUN python3 -m py_block_ip --config  --paths_deny /app/example_rules.txt
 CMD ["python3", "app/api.py"]

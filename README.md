@@ -10,6 +10,15 @@ Install this libary with comand
     pip install -r requirements.txt
     
     
+## Configuration 
+For configure run command 
+
+    python3 -m py_block_ip --config  --paths_deny you_file_rules.txt --ip_accept you_file_content_ip_not_blocked.txt --log filelog.log
+
+Being required only paths_deny if you not pass ip_accept all ips try access path is blocked
+and you not pass --log the  logs will be saved in /var/log/pyblock_logs.log
+
+
 This library run is necessary run with root because Ip Tables, and you restart you server all rules  will be revoked by default.
 Its use is simple, you need import function protect_attack and call in you code.
 
@@ -30,11 +39,11 @@ is necessary import lib.
   
 For you run app example with docker you need build image with comando
 
-    docker build -t pyblock:1.0 . 
+    docker build -t pyblock:last . 
 
 And for run 
 
-    docker run -p 3000:3000 --cap-add=NET_ADMIN pyblock:1.0
+    docker run -p 3000:3000 --cap-add=NET_ADMIN pyblock:last
 
 Is necessary parameter --cap-add=NET_ADMIN for run with root and is possible create rules in
 iptables.
