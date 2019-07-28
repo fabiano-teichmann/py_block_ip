@@ -5,6 +5,17 @@ from py_block_ip.read_file_rules import read_file
 
 
 def create_file_settings(ip_accept, paths_deny, log):
+    """
+
+    Args:
+        ip_accept (str): path file content list accept. Ips has be separate for line break
+        paths_deny (str): path file content list paths deny. Paths has be separate for line break
+        log (str): path file where is save logs. If not pass path logs is saved in /var/log/pyblock_logs.log
+
+
+    Returns:
+        (str) return msg success or msg error
+    """
     config = configparser.ConfigParser()
     config['settings'] = {}
     path = os.path.split(os.path.realpath(__file__))[0]

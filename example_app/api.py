@@ -1,6 +1,6 @@
 from tornado.web import Application, RequestHandler, HTTPError
 from tornado.ioloop import IOLoop
-from py_block_ip import protect_attack
+from py_block_ip.main import protect_attack
 
 
 class NotFoundHandler(RequestHandler):
@@ -11,8 +11,6 @@ class NotFoundHandler(RequestHandler):
 
         blocked = protect_attack(ip=self.request.remote_ip,
                                  path=self.request.uri,
-                                 file_rules='app/example_rules.txt',
-                                 ip_accept=['127.0.0.1'],
                                  subnet='0/24')
         if blocked is False:
             raise HTTPError(
